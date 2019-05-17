@@ -1,0 +1,13 @@
+
+A python library for the markov 2 parameter RNG model
+
+To follow along, you kind of need the paper, which isn't published yet
+
+import markov2p as m
+
+p01,p10 = m.biasscc_2_p(bias,scc)
+symbol_probability = m.symbol_prob(p01,p10,symbol,bitwdith)
+mps = m.most_probable_symbol = (p01,p10,bitwidth)
+entropy,mcv_prob,mcv = p_to_entropy(p01,p10,bitwidth)
+p01,p10 = pick_point(desired_entropy,epsilon,entropy,bitwidth)
+
