@@ -7,16 +7,16 @@ import markov2p as m
 Compute markov params from bias and serial correlation coefficient
     p01,p10 = m.biasscc_2_p(bias,scc)
 
-Compute probability of a symbol appearing from a generator with specific parmeters
+Compute probability of a symbol appearing from a generator with specific parameters
     symbol_probability = m.symbol_prob(p01,p10,symbol,bitwdith)
 
-Compute the most probable symbol to be generated from a model was a specified set of parameters.
+Compute the most probable symbol to be generated from a model with a specified set of parameters.
     mps = m.most_probable_symbol = (p01,p10,bitwidth)
 
-Compute the per-bit entropy, the most common symbol valuer and the probability of the most common symbol of a model with specified paramaters.
+Compute the per-bit entropy, the most common symbol value and the probability of the most common symbol of a model with specified parameters.
 
     entropy,mcv_prob,mcv = p_to_entropy(p01,p10,bitwidth)
 
-Choose a set of parameters that geneate data with a specified entropy. There are an infinite number of such parameters, unless the entropy is 1.0. So this choose one randomly from the available set of parameters that generate data with the chosen min entropy.
+Choose a set of parameters that generate data with a specified entropy. There are an infinite number of such parameters, unless the entropy is 1.0. So this choose one randomly from the available set of parameters that generate data with the chosen min entropy.
     p01,p10 = pick_point(desired_entropy,epsilon,entropy,bitwidth)
 
