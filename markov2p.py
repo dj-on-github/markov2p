@@ -313,8 +313,8 @@ def near(x,y, epsilon):
 
 def pick_point(desired, epsilon, bitwidth):
     while True:
-        chosen_param = random.genrandbits(16) & 0x01
-        chosen_side = random.genrandbits(16) & 0x01
+        chosen_param = random.getrandbits(16) & 0x01
+        chosen_side = random.getrandbits(16) & 0x01
         
         if (chosen_param==0):
             p01 = chosen_side
@@ -370,11 +370,9 @@ def pick_point(desired, epsilon, bitwidth):
         #fprintf(stderr,"   mid P10 = %f\n", choice10);
         #}
         Hc,mcv_prob,mcv = p_to_entropy(choice01,choice10,bitwidth)
-        #if (verbose_mode) {
-        #    fprintf(stderr,"   Hc  = %f\n", Hc);
-        #    fprintf(stderr,"   %sMCV Probability = %f%s\n",KCYN,mcv_prob,KWHT);
-        #    fflush(stdout);
-        #}
+        
+        print("   Hc  = %f" % Hc)
+        print("   MCV Probability = %f" % mcv_prob)
     
     
     #if (verbose_mode) {
