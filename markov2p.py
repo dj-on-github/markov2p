@@ -311,7 +311,7 @@ def p_to_entropy(p01, p10,bitwidth):
 def near(x,y, epsilon):
     return ((y > x-epsilon) and (y<x+epsilon))
 
-def pick_point(desired, epsilon, bitwidth):
+def pick_point(desired, epsilon, bitwidth, quiet=False):
     while True:
         chosen_param = random.getrandbits(16) & 0x01
         chosen_side = random.getrandbits(16) & 0x01
@@ -323,8 +323,17 @@ def pick_point(desired, epsilon, bitwidth):
             p10 = chosen_side
             p01 = random.random()
 
+        if not quiet:
+            print("chosen side = ",chosen_side)
+            print(" start p01  = ",p01)
+            print(" start p10  = ",p10)
+
         edge_entropy,mcv_prob,mcv=p_to_entropy(p01, p10, bitwidth)
-        if edge_entropy > desired:
+
+        if not quiet:
+            print(" edge_entropy = ", edge_entropy)
+
+        if edge_entropy < desired:
             break
     
     startpoint01 = 0.5
@@ -352,9 +361,11 @@ def pick_point(desired, epsilon, bitwidth):
     while (not near(Hc, desired, epsilon)):
         #if (verbose_mode) fprintf(stderr,"WHILE ...\n");
         if (Hc > desired):
+            print("Hc > desired  %f > %f" % (Hc,desired))
             startpoint01 = choice01
             startpoint10 = choice10
         else:
+            print("Hc < desired  %f < %f" % (Hc,desired))
             endpoint01 = choice01
             endpoint10 = choice10
         choice01 = (startpoint01 + endpoint01)/2.0
@@ -370,9 +381,9 @@ def pick_point(desired, epsilon, bitwidth):
         #fprintf(stderr,"   mid P10 = %f\n", choice10);
         #}
         Hc,mcv_prob,mcv = p_to_entropy(choice01,choice10,bitwidth)
-        
-        print("   Hc  = %f" % Hc)
-        print("   MCV Probability = %f" % mcv_prob)
+        if not quiet:
+            print("     Hc  = %f" % Hc)
+            print("     MCV Probability = %f" % mcv_prob)
     
     
     #if (verbose_mode) {
