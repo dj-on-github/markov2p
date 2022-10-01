@@ -6,10 +6,19 @@ from __future__ import division
 import math
 import random
 import sys
-import gmpy2
-from gmpy2 import mpfr
+
+try:
+    import gmpy2
+    from gmpy2 import mpfr
+except:
+    print("gmpy2/mpfr not available, using floats",file=sys.stderr)
+    def mpfr(x):
+        return float(x)
 
 verbose_mode = 1 
+
+#def mpfr(x):
+#    return float(x)
 
 def biasscc_2_p(bias,scc):
     p01 = bias * (mpfr('1.0') - scc)
@@ -169,8 +178,10 @@ def most_probable_symbol_odd(p01, p10,bitwidth):
     return mps
 
 def most_probable_symbol_even(p01, p10,bitwidth):
-    p00 = mpfr('1.0') - p01
-    p11 = mpfr('1.0') - p10
+    #p00 = mpfr('1.0') - p01
+    #p11 = mpfr('1.0') - p10
+    p00 = 1.0 - p01
+    p11 = 1.0 - p10
     
     mps = 0
         
@@ -304,7 +315,8 @@ def p_to_entropy(p01, p10,bitwidth):
     
     mcv_prob,mcv = symbol_max_probability(p01, p10, bitwidth)
     
-    ent = -gmpy2.log2(mcv_prob)
+    #ent = -gmpy2.log2(mcv_prob)
+    ent = -math.log2(mcv_prob)
     #printf("XXX entropy = %f  p01=%f, p10=%f\n",ent,p01,p10);
     return ent/bitwidth, mcv_prob, mcv;
     
@@ -361,11 +373,13 @@ def pick_point(desired, epsilon, bitwidth, quiet=False):
     while (not near(Hc, desired, epsilon)):
         #if (verbose_mode) fprintf(stderr,"WHILE ...\n");
         if (Hc > desired):
-            print("Hc > desired  %f > %f" % (Hc,desired))
+            if not quiet:
+                print("Hc > desired  %f > %f" % (Hc,desired))
             startpoint01 = choice01
             startpoint10 = choice10
         else:
-            print("Hc < desired  %f < %f" % (Hc,desired))
+            if not quiet:
+                print("Hc < desired  %f < %f" % (Hc,desired))
             endpoint01 = choice01
             endpoint10 = choice10
         choice01 = (startpoint01 + endpoint01)/2.0
