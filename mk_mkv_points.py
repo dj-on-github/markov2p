@@ -8,6 +8,8 @@ import random
 import sys
 
 import markov2p as m
+import generate as g
+import polygon as p
 
 def usage():
     print("Usage: mk_mkv_points <entropy rate> <# points>") 
@@ -25,7 +27,24 @@ if __name__ == '__main__':
     num_of_points = int(sys.argv[2])
 
     for i in range(num_of_points):
-        p01,p10 = m.pick_point(entropy,0.0000001,10,quiet=True)
-        print("p01,p10 = %f,%f = 0x%04X,0x%04X" % (p01,p10,int(p01*65535), int(p10*65535)))
+        p01,p10 = m.pick_point(entropy,0.0000001,16,quiet=True)
+        print("p01,p10 = %f,%f = 0x%04X,0x%04X, " % (p01,p10,int(p01*65535), int(p10*65535)),end="")
+
+        pass_count = 0
+        fail_count = 0
+        total_count = 0
+
+        for i in range(256):
+            data = g.generate(p01,p10,2304)
+            c1,c11 = g.count(data)
+            if i==0:
+                print("c1,c11=%x,%x " % (c1,c11), end="")
+            if p.inside_polygon(c1,c11):
+                pass_count += 1
+                total_count += 1
+            else:
+                fail_count += 1
+                total_count += 1
+        print("HR = %f" % (float(pass_count) / total_count))
 
     
