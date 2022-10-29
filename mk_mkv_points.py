@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.9
+#!/usr/bin/env python3
 
 from __future__ import print_function
 from __future__ import division
@@ -36,9 +36,14 @@ if __name__ == '__main__':
 
         for i in range(256):
             data = g.generate(p01,p10,2304)
+            bias,scc = m.p_2_biasscc(p01,p10)
+
             c1,c11 = g.count(data)
             if i==0:
-                print("c1,c11=%x,%x " % (c1,c11), end="")
+                if scc < 0.0:
+                    print("c1,c11=%04d,%04d mu,scc=%0.3f,%0.3f " % (c1,c11,bias,scc), end="")
+                else:
+                    print("c1,c11=%04d,%04d mu,scc=%0.3f, %0.3f " % (c1,c11,bias,scc), end="")
             if p.inside_polygon(c1,c11):
                 pass_count += 1
                 total_count += 1

@@ -37,6 +37,10 @@ def print_symbol(x, bitwidth):
             msymboltext += "1"
     return msymboltext
 
+def p_2_biasscc(p01,p10):
+    bias = p01/(p10+p01)
+    scc = 1.0-(p10+p01)
+    return bias, scc
 
 # Compute the min entropy per symbol for the
 # markov 2 parameter model, given the markov model
